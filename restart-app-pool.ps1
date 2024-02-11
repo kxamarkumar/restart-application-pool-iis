@@ -5,8 +5,8 @@ if ((Get-Module -ListAvailable -Name WebAdministration) -And (Get-Module -ListAv
 } 
 else {
     try {
-        Import-Module WebAdministration
-        Import-Module IISAdministration
+        Install-Module WebAdministration
+        Install-Module IISAdministration
 
         # Display a success message
         Write-Host -ForegroundColor Green "`nRequired Modules Installed Successfully"
@@ -14,12 +14,11 @@ else {
     catch {
         # Display an error message if any issues occur
         Write-Host -ForegroundColor Red "`nError installing required modules: $_ `n" 
-        throw
     }
 
 }
 
-[array]$appPoolList = @(Get-IISAppPool | Select-Object -Property Name)
+$appPoolList = @(Get-IISAppPool | Select-Object -Property Name)
 
 # Show app pools to user
 for ([int]$i = 0; $i -lt $appPoolList.Length; $i++) {
@@ -35,8 +34,6 @@ while ($userInput -gt $listLen){
     [int]$userInput = Read-Host "`nEnter the number of the web application pool you would like to restart"
 }
 
-# Write-Host "Restarting ..."  $appPoolList[$UserInput].Name
-
 try {
     # Restart the application pool
     Restart-WebAppPool -Name $appPoolList[$userInput].Name -ErrorAction Stop
@@ -48,5 +45,4 @@ catch {
     # Display an error message if any issues occur
     Write-Host -ForegroundColor Red "`nError refreshing applications: $_ `n" 
     Get-IISAppPool -Name $appPoolList[$UserInput].Name | Select-Object -Property Name,State
-    throw
 }
