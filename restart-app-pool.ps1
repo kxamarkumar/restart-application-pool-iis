@@ -30,7 +30,7 @@ $listLen = ($appPoolList.Length) - 1
 
 # Validate user input
 while ($userInput -gt $listLen){
-    Write-Output "`nInput must be between 0 - $listLen"
+    Write-Host "`nInput must be between 0 - $listLen"
     [int]$userInput = Read-Host "`nEnter the number of the web application pool you would like to restart"
 }
 
